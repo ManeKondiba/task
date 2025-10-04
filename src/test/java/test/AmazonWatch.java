@@ -50,12 +50,43 @@ public class AmazonWatch {
         WebElement searchBox = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("twotabsearchtextbox")));
         searchBox.sendKeys("Wrist Watch");
 
-        // Wait until search button is clickable
         WebElement searchBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("nav-search-submit-button")));
         searchBtn.click();
 
+        // Locate the slider track / container
+        WebElement sliderTrack = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(" //div[@class=\"a-section a-spacing-base a-spacing-top-base s-slider-container\"]")));
      
-        // Apply filters
+        // Wait for slider handles
+       
+        WebElement minSlider = sliderTrack.findElement(By.id("p_36/range-slider_slider-item_lower-bound-slider"));
+        //WebElement minSlider = sliderTrack.findElement(By.xpath("//input[@aria-valuetext=\"₹3,500\"]"));
+        
+      System.out.println("minvalue:"+ minSlider.getAttribute("value"));    //(0, 189)
+      
+     // WebElement maxSlider =sliderTrack.findElement( By.id("p_36/range-slider_slider-item_upper-bound-slider"));
+     // WebElement maxSlider =sliderTrack.findElement( By.xpath("//input[@aria-valuetext=\"₹5,500\""));
+         // System.out.println("maxvalue:"+ maxSlider.getAttribute("value"));
+       
+          
+      Actions act = new Actions(driver);
+    
+     act.clickAndHold(sliderTrack).moveByOffset( 66, 0).release().perform();
+      Thread.sleep(2000);
+  // act.dragAndDropBy(minSlider,35,0).perform();
+      
+ 
+    //    act.clickAndHold(maxSlider).moveByOffset(89, 0).release().perform();
+        //act.dragAndDropBy(maxSlider,-130,0).perform();
+        //Thread.sleep(2000);
+
+        // Click "Go" button
+        WebElement goButton = wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//input[@class='a-button-input' and @type='submit']"))); 
+        goButton.click();
+
+        // Wait for filtered results to load
+        Thread.sleep(3000); 
+        //Apply Filters
         WebElement Display= wait.until( ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Analogue']")));
         Display.click();
 
@@ -68,37 +99,7 @@ public class AmazonWatch {
         WebElement Discount= wait.until( ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='25% Off or more']")));
         Discount.click();
         
-        
-        
-        // Wait for slider handles
-       
-        WebElement minSlider = wait.until(ExpectedConditions.visibilityOfElementLocated(
-        	    By.xpath("(//input[@id='p_36/range-slider_slider-item_lower-bound-slider'])[1]")));
-        	WebElement maxSlider = wait.until(ExpectedConditions.visibilityOfElementLocated(
-        	    By.xpath("(//input[@id='p_36/range-slider_slider-item_upper-bound-slider'])[1]")));
-
-    
-        	 Actions act = new Actions(driver);
-       
-
-        // Move min slider (towards ₹3,500)
-        act.clickAndHold(minSlider).moveByOffset(40, 0).build().perform();
-        Thread.sleep(2000);
-
-        // Move max slider (towards ₹5,500)
-        act.clickAndHold(maxSlider).moveByOffset(-55, 0).perform();
-        Thread.sleep(2000);
-
-        // Click "Go" button
-        WebElement goButton = wait.until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//input[@aria-label='Go - Submit price range']")));
-        goButton.click();
-
-        // Wait for filtered results to load
-        Thread.sleep(3000); 
-
-;
-
+      
          
        // Get first product details
        WebElement firstProduct = wait.until(ExpectedConditions.visibilityOfElementLocated(
